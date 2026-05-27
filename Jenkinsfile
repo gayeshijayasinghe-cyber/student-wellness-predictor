@@ -47,7 +47,9 @@ pipeline {
 
         stage('Monitoring') {
             steps {
-                bat 'powershell -Command "Invoke-WebRequest http://localhost:5000/health"'
+                bat '''
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "(Invoke-WebRequest http://localhost:5000/health).StatusCode"
+        '''
             }
         }
 
