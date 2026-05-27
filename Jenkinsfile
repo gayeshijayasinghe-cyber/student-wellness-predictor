@@ -36,10 +36,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 bat '''
-                "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" stop wellness-container
-                "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" rm wellness-container
-                "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" run -d --name wellness-container -p 5000:5000 wellness-app
-                '''
+        for /f %%i in ('"C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" ps -q') do "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" stop %%i
+
+        for /f %%i in ('"C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" ps -aq') do "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" rm %%i
+
+        "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" run -d --name wellness-container -p 5000:5000 wellness-app
+        '''
             }
         }
 
