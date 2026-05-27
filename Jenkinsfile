@@ -48,8 +48,10 @@ pipeline {
         stage('Monitoring') {
             steps {
                 bat '''
-        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "(Invoke-WebRequest http://localhost:5000/health).StatusCode"
-        '''
+                timeout /t 10
+
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "(Invoke-WebRequest http://localhost:5000/health).StatusCode"
+                '''
             }
         }
 
