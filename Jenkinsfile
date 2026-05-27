@@ -36,9 +36,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 bat '''
-                docker stop wellness-container
-                docker rm wellness-container
-                docker run -d --name wellness-container -p 5000:5000 wellness-app
+                "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" stop wellness-container
+                "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" rm wellness-container
+                "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" run -d --name wellness-container -p 5000:5000 wellness-app
                 '''
             }
         }
