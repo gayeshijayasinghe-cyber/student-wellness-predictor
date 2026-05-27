@@ -1,21 +1,17 @@
-"""Simple Flask application for student wellness predictor."""
-
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def home():
-    """Home route."""
-    return "Smart Student Wellness Predictor Running"
+    return "Student Wellness Predictor Running"
 
 
-@app.route('/health')
+@app.route("/health")
 def health():
-    """Health check route."""
-    return "Application Healthy"
+    return jsonify({"status": "healthy"}), 200
 
 
-if __name__ == '__main__':
-    app.run(port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
