@@ -1,30 +1,34 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON = 'C:\\Users\\gayes\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
+    }
+
     stages {
 
         stage('Build') {
             steps {
-                bat 'python -m pip install -r requirements.txt'
+                bat '"%PYTHON%" -m pip install -r requirements.txt'
                 bat 'docker build -t wellness-app .'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'python -m pytest tests'
+                bat '"%PYTHON%" -m pytest tests'
             }
         }
 
         stage('Code Quality') {
             steps {
-                bat 'python -m pylint app.py'
+                bat '"%PYTHON%" -m pylint app.py'
             }
         }
 
         stage('Security Scan') {
             steps {
-                bat 'python -m bandit -r .'
+                bat '"%PYTHON%" -m bandit -r .'
             }
         }
 
