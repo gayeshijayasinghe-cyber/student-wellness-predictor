@@ -58,7 +58,7 @@ pipeline {
 
             bat '"%POWERSHELL%" -Command "Start-Sleep -Seconds 20"'
 
-            bat '"%POWERSHELL%" -Command "try { (Invoke-WebRequest http://localhost:5000/health).StatusCode } catch { Write-Host $_; exit 1 }"'
+            bat '"powershell -Command "try { $response = Invoke-WebRequest http://localhost:5000/health -UseBasicParsing; if ($response.StatusCode -eq 200) { Write-Host 'Health check passed' } } catch { Write-Host $_; exit 1 }""'
             }
         }
     }
