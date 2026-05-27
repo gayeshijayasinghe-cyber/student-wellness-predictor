@@ -5,26 +5,26 @@ pipeline {
 
         stage('Build') {
             steps {
-                bat 'pip install -r requirements.txt'
+                bat 'python -m pip install -r requirements.txt'
                 bat 'docker build -t wellness-app .'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'pytest tests'
+                bat 'python -m pytest tests'
             }
         }
 
         stage('Code Quality') {
             steps {
-                bat 'pylint app.py'
+                bat 'python -m pylint app.py'
             }
         }
 
         stage('Security Scan') {
             steps {
-                bat 'bandit -r .'
+                bat 'python -m bandit -r .'
             }
         }
 
