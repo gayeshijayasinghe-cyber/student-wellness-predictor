@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
-        PYTHON = "C:\\Users\\gayes\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
-        DOCKER = "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe"
+        PYTHON = 'C:\\Users\\gayes\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
+        DOCKER = 'C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe'
+        POWERSHELL = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe'
     }
 
     stages {
@@ -35,25 +36,30 @@ pipeline {
 
         stage('Deploy') {
             steps {
+
                 bat '''
-        for /f %%i in ('"C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" ps -q') do "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" stop %%i
+                for /F %%i in ('"%DOCKER%" ps -q') do "%DOCKER%" stop %%i
+                '''
 
-        for /f %%i in ('"C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" ps -aq') do "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" rm %%i
+                bat '''
+                for /F %%i in ('"%DOCKER%" ps -aq') do "%DOCKER%" rm %%i
+                '''
 
-        "C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" run -d --name wellness-container -p 5000:5000 wellness-app
-        '''
+                bat '"%DOCKER%" run -d --name wellness-container -p 5000:5000 wellness-app'
+
+                bat '"%DOCKER%" logs wellness-container'
             }
         }
 
         stage('Monitoring') {
             steps {
-                bat '''
-        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Start-Sleep -Seconds 10"
 
-        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "(Invoke-WebRequest http://localhost:5000/health).StatusCode"
-        '''
+            bat '"%DOCKER%" logs wellness-container'
+
+            bat '"%POWERSHELL%" -Command "Start-Sleep -Seconds 20"'
+
+            bat '"%POWERSHELL%" -Command "try { (Invoke-WebRequest http://localhost:5000/health).StatusCode } catch { Write-Host $_; exit 1 }"'
             }
         }
-
     }
 }
