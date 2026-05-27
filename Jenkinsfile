@@ -2,17 +2,16 @@ pipeline {
     agent any
 
     environment {
-        environment {
-    PYTHON = 'C:\\Users\\gayes\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
-    DOCKER = 'C:\\Users\\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe'
-}
+        PYTHON = 'C:\\Users\\gayes\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
+        DOCKER = 'C:\Users\gayes\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe'
+    }
 
     stages {
 
         stage('Build') {
             steps {
-        bat '"%PYTHON%" -m pip install -r requirements.txt'
-        bat '"%DOCKER%" build -t wellness-app .'
+                bat '"%PYTHON%" -m pip install -r requirements.txt'
+                bat '"%DOCKER%" build -t wellness-app .'
             }
         }
 
@@ -36,7 +35,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-        bat '"%DOCKER%" run -d -p 5000:5000 wellness-app'
+                bat '"%DOCKER%" run -d -p 5000:5000 wellness-app'
             }
         }
 
